@@ -1,17 +1,18 @@
 import classNames from 'classnames/bind';
 import { useState } from 'react';
 import styles from './login.module.scss';
+import { useDispatch } from 'react-redux';
+import * as actions from '~/store/actions';
+import InputForm from '~/components/InputForm';
+
 const cx = classNames.bind(styles);
 function Login() {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [payload, setPayload] = useState({ username: '', password: '' });
+    const dispatch = useDispatch();
     const handleLogin = (e) => {
         e.preventDefault();
-        if (username === 'admin' && password === '123') {
-            console.log('login success');
-        } else {
-            console.log('login failed');
-        }
+        // console.log(payload)
+        dispatch(actions.login(payload));
     };
     return (
         <div className={cx('login-page')}>
@@ -22,21 +23,23 @@ function Login() {
                         <input
                             type="text"
                             className={cx('login-input')}
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            value={payload.username}
+                            onChange={(e) => setPayload((prev) => ({ ...prev, ['username']: e.target.value }))}
                         />
                         <label>Username</label>
                     </div>
+                    {/* <InputForm text='Username'/> */}
 
                     <div className={cx('user-box')}>
                         <input
                             type="password"
                             className={cx('login-input')}
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            value={payload.password}
+                            onChange={(e) => setPayload((prev) => ({ ...prev, ['password']: e.target.value }))}
                         />
                         <label>Password</label>
                     </div>
+                    {/* <InputForm text='Password'/> */}
                     <button type="submit" className={cx('login-btn')} onClick={handleLogin}>
                         Login
                     </button>
